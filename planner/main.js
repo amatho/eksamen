@@ -19,6 +19,19 @@ const eventArray = [
 
 const compose = (a, b) => (...args) => a(b(...args));
 
+const timeToNumber = time => {
+  const str = time.split(":").join("");
+  return Number(str);
+};
+
+const compareTime = (a, b) => {
+  const timeA = timeToNumber(a);
+  const timeB = timeToNumber(b);
+  return timeA - timeB;
+};
+
+const compareEvent = (a, b) => compareTime(a.time, b.time);
+
 const createEvent = ({
   title,
   time,
@@ -45,7 +58,12 @@ const displayHTML = html => {
 const displayAndCreate = compose(displayHTML, createEvent);
 
 const createAllEvents = () => {
+  sortEvents(eventArray);
   eventArray.forEach(event => displayAndCreate(event));
+};
+
+const sortEvents = arr => {
+  arr.sort(compareEvent);
 };
 
 createAllEvents();
